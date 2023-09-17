@@ -71,9 +71,13 @@ while True:
         if not number or not number.isdigit():
             window['-ERROR-'].update("Please provide valid number!", text_color='yellow', font=fontUsed)
             continue
-
-        x = threading.Thread(target=download_images, args=(numberThreads, query, number))
-        x.start()
+        with open("log.txt", "w") as log:
+            try:
+                x = threading.Thread(target=download_images, args=(numberThreads, query, number))
+                x.start()
+            except Exception as e:
+                # tkinter and threads have a lot of problems working together :(
+                log.write(e)
 
         # update threads list
         threadsList.append(query + " : Searching...")
